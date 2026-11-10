@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MAS Laskenta ja valvontatoimi – urakkalaskenta ja teräsrakenteiden asennuksen valvonta (B7), koko Suomi.">
+<title>MAS Laskenta ja valvontatoimi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: valkoinen logokaista, sininen "piirustuspöytä"-hero jossa asiakirjarekisteri, sitten kapea lukupalsta + rekisteri-tyyliset listat */
+:root{
+  --navy:#1f3f68; --navy-deep:#16304f; --orange:#f39321; --steel:#7a8ea6;
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#17222f; --muted:#56657a; --line:#d9dfe7;
+  --hero-bg:#1f3f68; --hero-fg:#ffffff; --hero-muted:#c3cfdd; --paper:#ffffff; --paper-fg:#17222f;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow","Segoe UI",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1823; --surface:#16212e; --fg:#e8edf3; --muted:#9fb0c3; --line:#2a3a4d;
+  --hero-bg:#132a45; --hero-fg:#ffffff; --hero-muted:#b4c3d4; --paper:#1b2838; --paper-fg:#e8edf3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1823; --surface:#16212e; --fg:#e8edf3; --muted:#9fb0c3; --line:#2a3a4d;
+  --hero-bg:#132a45; --hero-fg:#ffffff; --hero-muted:#b4c3d4; --paper:#1b2838; --paper-fg:#e8edf3; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,4vw,38px);color:var(--fg)}
+h3{font-size:22px}
+p{margin:0}
+.label{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+
+/* logokaista */
+.top{background:#ffffff;border-bottom:4px solid var(--orange)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px;flex-wrap:wrap}
+.top img{height:64px;width:auto;display:block}
+.top .phone{font-family:var(--f-mono);font-size:15px;color:#1f3f68;font-weight:500}
+
+/* hero */
+.hero{background:var(--hero-bg);color:var(--hero-fg);
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:28px 28px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;padding-block:64px;align-items:center}
+.hero h1{font-size:clamp(38px,5.6vw,62px);text-transform:uppercase;letter-spacing:.01em}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero .lead{color:var(--hero-muted);font-size:19px;margin-top:20px;max-width:34em}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-block;font-family:var(--f-display);font-size:20px;letter-spacing:.03em;text-transform:uppercase;padding:12px 22px;border-radius:3px;text-decoration:none}
+.btn-primary{background:var(--orange);color:#16304f}
+.btn-ghost{border:2px solid rgba(255,255,255,.5);color:#fff}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+/* asiakirjarekisteri */
+.register{background:var(--paper);color:var(--paper-fg);border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.28);overflow:hidden;min-width:0}
+.register header{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.register ol{list-style:none;margin:0;padding:6px 0}
+.register li{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:baseline;padding:9px 18px;border-bottom:1px dashed var(--line);font-size:15px}
+.register li:last-child{border-bottom:0}
+.register .code{font-family:var(--f-mono);font-size:12px;color:var(--steel)}
+.register .ok{font-family:var(--f-mono);font-size:11px;color:#1d7a46;background:rgba(29,122,70,.12);padding:2px 7px;border-radius:2px;white-space:nowrap}
+
+/* osiot */
+section{padding-block:64px}
+section + section{border-top:1px solid var(--line)}
+.head{display:grid;gap:10px;margin-bottom:32px;max-width:40em}
+.head p{color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.item{display:grid;gap:8px;align-content:start;padding-top:16px;border-top:3px solid var(--navy)}
+:root[data-theme="dark"] .item{border-top-color:var(--steel)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .item{border-top-color:var(--steel)}}
+.item p{color:var(--muted);font-size:16px}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;gap:8px;align-content:start}
+.steps li::before{content:counter(s);font-family:var(--f-display);font-size:44px;line-height:1;color:var(--orange)}
+.steps p{color:var(--muted);font-size:16px}
+
+.who{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.who p + p{margin-top:14px}
+.facts{list-style:none;margin:0;padding:0;border:1px solid var(--line);background:var(--surface);border-radius:4px}
+.facts li{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);font-size:16px}
+.facts li:last-child{border-bottom:0}
+.facts span:first-child{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:3px}
+
+.contact{background:var(--surface)}
+.contact .card{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center}
+.contact dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;margin:0;font-size:18px}
+.contact dt{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:5px}
+.contact dd{margin:0;font-weight:600;user-select:all}
+footer{padding-block:28px;font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px}
+
+@media (max-width:860px){
+  .hero .wrap,.who,.contact .card{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .grid3,.steps{grid-template-columns:1fr}
+  .facts li{grid-template-columns:1fr;gap:2px}
+  .top img{height:52px}
+  .register li{grid-template-columns:44px 1fr}
+  .register .ok{display:none}
+}
+</style>
+
+<div class="top"><div class="wrap">
+  <img src="logo.png" alt="MAS Laskenta ja valvontatoimi">
+  <span class="phone">+358 500 723 537</span>
+</div></div>
+
+<div class="hero"><div class="wrap">
+  <div>
+    <p class="label">Pienille urakoitsijoille · koko Suomi</p>
+    <h1 style="margin-top:12px">Työmaan paperit <em>valmiina</em>, kun pääurakoitsija kysyy</h1>
+    <p class="lead">Teen urakoitsijan turvallisuus- ja laatuasiakirjat kuntoon ja pidän ne ajan tasalla kuukausimaksulla. Sinä teet työn, paperit ovat valmiina ennen työmaalle menoa.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#yhteys">Pyydä tarjous</a>
+      <a class="btn btn-ghost" href="#laskenta">Urakkalaskenta</a>
+    </div>
+  </div>
+  <div class="register" aria-label="Esimerkki kohteen asiakirjakansiosta">
+    <header><span>KOHDEKANSIO · ESIMERKKI</span><span>Rev. B</span></header>
+    <ol>
+      <li><span class="code">TS-01</span><span>Työturvallisuus- ja asennussuunnitelma</span><span class="ok">valmis</span></li>
+      <li><span class="code">RA-02</span><span>Riskiarvio työvaiheittain</span><span class="ok">valmis</span></li>
+      <li><span class="code">NS-03</span><span>Nostosuunnitelma</span><span class="ok">valmis</span></li>
+      <li><span class="code">PR-04</span><span>Pätevyys- ja lupakooste</span><span class="ok">voimassa</span></li>
+      <li><span class="code">PE-05</span><span>Perehdytysmateriaali</span><span class="ok">valmis</span></li>
+      <li><span class="code">TP-06</span><span>Tarkastus- ja luovutuspöytäkirjat</span><span class="ok">pohjat</span></li>
+    </ol>
+  </div>
+</div></div>
+
+<section id="sisalto"><div class="wrap">
+  <div class="head">
+    <p class="label">Paperipaketti</p>
+    <h2>Mitä pääurakoitsija vaatii, ennen kuin pääset aloittamaan</h2>
+    <p>Samat asiakirjat, joita käytän itse asennustyömailla. Ne tehdään sinun yrityksellesi ja päivitetään kohteittain.</p>
+  </div>
+  <div class="grid3">
+    <div class="item"><h3>Turvallisuussuunnitelmat</h3><p>Työturvallisuus- ja asennussuunnitelma kohteen mukaan, riskiarvio työvaiheittain ja tarvittaessa nostosuunnitelma.</p></div>
+    <div class="item"><h3>Pätevyydet ja luvat</h3><p>Koko porukan kortit ja luvat yhdessä rekisterissä: työturvallisuus-, tulityö- ja ensiapukortit, työnantajan luvat ja hitsaajien pätevyydet. Muistutus ennen kuin jokin vanhenee.</p></div>
+    <div class="item"><h3>Laatu ja luovutus</h3><p>Tarkastus- ja luovutuspöytäkirjat valmiina pohjina, jotta työvaihe saadaan kuitattua heti kun se on tehty.</p></div>
+    <div class="item"><h3>Perehdytys</h3><p>Perehdytysmateriaali uusille asentajille ja aliurakoitsijan omat työmaaohjeet.</p></div>
+    <div class="item"><h3>Paperit pysyvät ajan tasalla</h3><p>Kun kohde, porukka tai vaatimus muuttuu, päivitän asiakirjat. Kuukausimaksuun kuuluu ylläpito, ei pelkkä kertatoimitus.</p></div>
+    <div class="item"><h3>Yksi kansio</h3><p>Kaikki paperit yhdessä paikassa, ja ne voi lähettää pääurakoitsijalle sellaisenaan.</p></div>
+  </div>
+</div></section>
+
+<section id="laskenta"><div class="wrap">
+  <div class="head">
+    <p class="label">Urakkalaskenta</p>
+    <h2>Asennusurakan tarjous laskettuna, kun oma aika ei riitä</h2>
+    <p>Lasken asennusurakoitsijan tarjoukset piirustuksista ja tarjouspyyntöaineistosta. Saat määrät, työvuorot ja hinnan valmiina tarkistettavaksi ennen kuin lähetät tarjouksen.</p>
+  </div>
+  <div class="grid3">
+    <div class="item"><h3>Teräsrungot</h3><p>Pilarit, palkit, ristikot, siteet ja varusteet asennusyksiköittäin. Työmaahitsaukset ja irto-osat erotellaan tuntitöiksi.</p></div>
+    <div class="item"><h3>Elementit</h3><p>PVP-elementit neliöinä, leikkaukset ja listoitukset omina riveinään. Betonielementit kappaleittain.</p></div>
+    <div class="item"><h3>Tarjous valmiiksi</h3><p>Määräluettelo, kesto työvuoroina, urakkahinta, rajaukset ja tarjouskirje. Sinä tarkistat ja lähetät.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head">
+    <p class="label">Kenelle</p>
+    <h2>Pienelle urakoitsijalle, jolla ei ole omaa toimistoa paperitöille</h2>
+    <p>Asennus-, hitsaus-, purku-, katto- ja rakennusalan yrityksille, jotka tekevät töitä isompien pääurakoitsijoiden ja teollisuuslaitosten kohteissa.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head">
+    <p class="label">Näin se toimii</p>
+    <h2>Neljä vaihetta, ja paperit ovat käytössä</h2>
+  </div>
+  <ol class="steps">
+    <li><h3>Soitto tai viesti</h3><p>Kerrot, millaisia töitä teet ja mitä tilaajasi vaativat.</p></li>
+    <li><h3>Lähtötiedot</h3><p>Kokoan yrityksesi tiedot, porukan kortit ja luvat sekä olemassa olevat paperit.</p></li>
+    <li><h3>Paketti valmiiksi</h3><p>Teen asiakirjat ja käymme ne läpi yhdessä ennen käyttöönottoa.</p></li>
+    <li><h3>Ylläpito</h3><p>Uusi kohde, uusi asentaja tai vanheneva kortti päivitetään kuukausimaksulla.</p></li>
+  </ol>
+</div></section>
+
+<section><div class="wrap who">
+  <div>
+    <div class="head" style="margin-bottom:20px">
+      <p class="label">Kuka tekee</p>
+      <h2>Markku Saarinen, Rauma</h2>
+    </div>
+    <p>Olen tehnyt asennusalan töitä 30 vuotta: telakalla, konepajalla ja asennustyömailla. Nykyään vastaan asennusyrityksen tarjouslaskennasta ja työmaiden paperityöstä.</p>
+    <p>Tiedän, mitä pääurakoitsijan turvallisuuskoordinaattori kysyy, koska teen samoja papereita itse joka viikko.</p>
+  </div>
+  <ul class="facts">
+    <li><span>Pätevyys</span><span>Teräsrakenteiden asennustyönjohtaja ja teräsrakennetehtaan työnjohtaja, vaativa</span></li>
+    <li><span>Kokemus</span><span>30 vuotta asennusalalla</span></li>
+    <li><span>Muut palvelut</span><span>Teräsrakenteiden asennuksen valvonta (SFS-EN 1090-2 / B7)</span></li>
+    <li><span>Toiminta-alue</span><span>Koko Suomi</span></li>
+  </ul>
+</div></section>
+
+<section class="contact" id="yhteys"><div class="wrap card">
+  <div class="head" style="margin-bottom:0">
+    <p class="label">Yhteys</p>
+    <h2>Kysy tarjous omalle yrityksellesi</h2>
+    <p>Hinta määräytyy porukan koon ja kohteiden määrän mukaan. Soita tai laita sähköpostia.</p>
+  </div>
+  <dl>
+    <dt>Puhelin</dt><dd>+358 500 723 537</dd>
+    <dt>Sähköposti</dt><dd>markku@masvalvonta.fi</dd>
+  </dl>
+</div></section>
+
+<footer><div class="wrap">
+  <span>MAS Valvonta ja Laskenta toimi</span>
+  <span>Y-tunnus 3230340-1</span>
+  <span>Rauma</span>
+</div></footer>
